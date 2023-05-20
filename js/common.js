@@ -29,23 +29,58 @@ document.addEventListener('DOMContentLoaded', () => {
     btnClose.addEventListener('click', () => { win.close(); })
 
     document.getElementById("getUsersButton").addEventListener("click", () => {
-
+        document.querySelector('table').style.display = 'block';
+        document.querySelector('#userCard').style.display = 'none';
         let output = document.querySelector('#responseOutput')
 
-        ipcRenderer.on('fetch-data-response', (event, data) => {
+        output.replaceChildren();
+
+        ipcRenderer.on('get-users-response', (event, data) => {
             data.forEach(row => {
-                output.innerHTML += 
-                `
-                    <tr>
-                        <td>${row[0]}</td>
-                        <td>${row[1]}</td>
-                        <td>${row[2]}</td>
-                    </tr>
-                `
+                let tr = document.createElement('tr')
+
+                for (let i = 0; i < 3; i++){
+                    let td = document.createElement('td')
+                    let tdText = document.createTextNode(row[i])
+                    td.appendChild(tdText)
+                    tr.appendChild(td)
+                }
+
+                let td = document.createElement('td')
+                let img = document.createElement('img')
+                img.setAttribute('src', src="data:image;base64," + row[3])
+                td.appendChild(img)
+                tr.appendChild(td)
+
+                output.appendChild(tr)
             });
          });
 
-         ipcRenderer.send('fetch-data'); 
+         ipcRenderer.send('get-users'); 
+    })
+
+    document.getElementById('getUserByIdButton').addEventListener('click', () => {
+        document.querySelector('table').style.display = 'none';
+        document.querySelector('#userCard').style.display = 'block';
+
+        let userId = document.getElementById('userIdInput').value
+        let output = document.querySelector('#responseOutput')
+
+        ipcRenderer.send('get-user-by-id', userId); 
+
+        output.replaceChildren();
+
+        ipcRenderer.on('get-user-by-id-response', (event, data) => {
+            
+            let card = document.getElementById('userCard')
+            let avatar = card.children[0]
+            let username = card.children[1]
+            let email = card.children[2]
+
+            avatar.setAttribute('src', src="data:image;base64," + data[3])
+            username.textContent = `${data[0]}# ${data[1]}`
+            email.textContent = data[2]
+        })
     })
 
     console.log('common.js loaded')

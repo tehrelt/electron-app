@@ -33,10 +33,21 @@ app.whenReady().then(() => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
     })
 
-    ipcMain.on('fetch-data', async (event, args) => {
+    ipcMain.on('get-users', async (event, args) => {
         try {
-            const response = await axios.get('http://127.0.0.1:8000/users');
-            event.reply('fetch-data-response', response.data);
+            console.log(args)
+            const response = await axios.get('http://127.0.0.1:8000/users/');
+            event.reply('get-users-response', response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    });
+
+    ipcMain.on('get-user-by-id', async (event, args) => {
+        try {
+            console.log(args)
+            const response = await axios.get('http://127.0.0.1:8000/users/' + args);
+            event.reply('get-user-by-id-response', response.data);
         } catch (error) {
             console.error(error);
         }

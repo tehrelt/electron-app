@@ -35,13 +35,16 @@
 
 
         <main class="main">
-            <button class="btn" id="getUsersButton">Get Users</button>
+            <button class="btn" id="getUsersButton">Get users</button> <br/>
+            <input type="number" name="userId" id="userIdInput" placeholder="Enter user id" min="0"/>
+            <button class="btn" id="getUserByIdButton">Get user</button>
             <div>
                 <table style="color: white;">
                     <thead>
                         <th>ID</th>
                         <th>UserName</th>
                         <th>Email</th>
+                        <th>Avatar</th>
                     </thead>
                     <tbody id="responseOutput">
                         <tr>
@@ -49,6 +52,11 @@
                         </tr>
                     </tbody>
                 </table>
+                <div id="userCard" class="card" style="color:white;">
+                    <img src="" alt="avatar">
+                    <h2>UserName</h2>
+                    <p>Email</p>
+                </div>
             </div>
         </main>
     </div>

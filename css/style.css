@@ -24,6 +24,10 @@ body {
     grid-template-columns: 10px 40px 1fr 50px 50px 50px 10px;
     height: 40px;
     background-color: #212121;
+
+    position: fixed;
+    top: 0;
+    width: 100%;
 }
 
 .header > .title {
@@ -67,4 +71,8 @@ body {
     width: 100%;
 
     color: #fff;
+}
+
+.main {
+    margin-top: 40px;
 }
