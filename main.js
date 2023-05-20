@@ -1,4 +1,5 @@
-const { app, BrowserWindow } = require("electron")
+const { app, BrowserWindow, ipcMain } = require("electron")
+const axios = require('axios');
 
 const createWindow = () => {
     const win = new BrowserWindow({
@@ -30,5 +31,14 @@ app.whenReady().then(() => {
 
     app.on('activate', () => {
         if (BrowserWindow.getAllWindows().length === 0) createWindow()
-      })
+    })
+
+    ipcMain.on('fetch-data', async (event, args) => {
+        try {
+            const response = await axios.get('http://127.0.0.1:8000/users');
+            event.reply('fetch-data-response', response.data);
+        } catch (error) {
+            console.error(error);
+        }
+    });
 })

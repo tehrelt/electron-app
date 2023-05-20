@@ -1,4 +1,5 @@
 const remote = require('@electron/remote')
+const { ipcRenderer } = require('electron');
 
 const win = remote.getCurrentWindow()
 
@@ -26,6 +27,26 @@ document.addEventListener('DOMContentLoaded', () => {
     })
 
     btnClose.addEventListener('click', () => { win.close(); })
+
+    document.getElementById("getUsersButton").addEventListener("click", () => {
+
+        let output = document.querySelector('#responseOutput')
+
+        ipcRenderer.on('fetch-data-response', (event, data) => {
+            data.forEach(row => {
+                output.innerHTML += 
+                `
+                    <tr>
+                        <td>${row[0]}</td>
+                        <td>${row[1]}</td>
+                        <td>${row[2]}</td>
+                    </tr>
+                `
+            });
+         });
+
+         ipcRenderer.send('fetch-data'); 
+    })
 
     console.log('common.js loaded')
 })
